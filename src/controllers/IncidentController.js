@@ -44,13 +44,12 @@ module.exports = {
     async delete (request, response) {
         const { id } = request.params
         const ong_id = request.headers.authorization
-
+        
         const incident = await connection('incidents')
         .where('id', id)
         .select('ong_id')
-        first()
 
-        if (incident === undefined || incident.ong_id !== ong_id)
+        if (incident[0] === undefined || incident[0].ong_id !== ong_id)
             return response.status(401).json({ error: 'Operation not permitted.' })
 
         await connection('incidents')
